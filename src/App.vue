@@ -16,6 +16,4 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  #app
-    padding 10px
 </style>
