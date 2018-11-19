@@ -13,7 +13,12 @@
           <div :class="{on: loginWay}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button disabled="disabled" class="get_verification" :class="{right_phone_number: isRightPhone}">获取验证码</button>
+              <button :disabled="!isRightPhone || computeTime>0"
+                      class="get_verification"
+                      :class="{right_phone_number: isRightPhone}"
+                      @click.prevent="sendCode">
+                {{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}
+              </button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -29,10 +34,10 @@
                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input :type="isShowPwd ? 'text' : 'password'" maxlength="8" placeholder="密码">
+                <div class="switch_button" @click="isShowPwd=!isShowPwd" :class="isShowPwd ? 'on' : 'off'">
+                  <div class="switch_circle" :class="{right: isShowPwd}"></div>
+                  <span class="switch_text">{{isShowPwd ? 'abc' : ''}}</span>
                 </div>
               </section>
               <section class="login_message">
@@ -56,14 +61,32 @@
   export default {
     data () {
       return {
-        loginWay: true, // true: 短信登陆, false: 密码登陆
+        loginWay: false, // true: 短信登陆, false: 密码登陆
         phone: '', // 手机号
+        computeTime: 0, // 计时剩余时间
+        isShowPwd: false, // 是否显示密码
       }
     },
 
     computed: {
       isRightPhone () {
         return /^1\d{10}$/.test(this.phone)
+      }
+    },
+
+    methods: {
+      sendCode () {
+        // 开始倒计时
+        this.computeTime = 30
+        const interalId = setInterval(() => {
+          console.log('----', this.computeTime)
+          this.computeTime--
+          if(this.computeTime<=0) {
+            this.computeTime = 0
+            // 清除定时器
+            clearInterval(interalId)
+          }
+        }, 1000)
       }
     }
   }
@@ -161,7 +184,6 @@
                 &.on
                   background #02a774
                 >.switch_circle
-                //transform translateX(27px)
                   position absolute
                   top -1px
                   left -1px
@@ -172,6 +194,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.right
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999
