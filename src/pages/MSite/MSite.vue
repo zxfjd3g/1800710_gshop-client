@@ -11,112 +11,21 @@
     </TopHeader>
     <!--首页导航-->
     <nav class="msite_nav">
-      <div class="swiper-container">
+      <div class="swiper-container" v-if="categorys.length">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
+          <div class="swiper-slide" v-for="(categorys, index) in categorysArr" :key="index">
+            <a href="javascript:" class="link_to_food" v-for="(category,index) in categorys" :key="index">
               <div class="food_container">
-                <img src="./images/nav/1.jpg">
+                <img :src="'https://fuss10.elemecdn.com' + category.image_url">
               </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg">
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/3.jpg">
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/4.jpg">
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/5.jpg">
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/6.jpg">
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/7.jpg">
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/8.jpg">
-              </div>
-              <span>土豪推荐</span>
-            </a>
-          </div>
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/9.jpg">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/10.jpg">
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/11.jpg">
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/12.jpg">
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/13.jpg">
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/14.jpg">
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/1.jpg">
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg">
-              </div>
-              <span>土豪推荐</span>
+              <span>{{category.title}}</span>
             </a>
           </div>
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
       </div>
+      <img src="./images/msite_back.svg" alt="loading" v-else>
     </nav>
     <!--首页附近商家-->
     <div class="msite_shop_list">
@@ -131,7 +40,10 @@
 
 <script>
   import {mapState} from 'vuex'
+  import Swiper from 'swiper'
+  import 'swiper/dist/css/swiper.min.css'
   import ShopList from '../../components/ShopList/ShopList.vue'
+
 
   export default {
 
@@ -140,9 +52,67 @@
       this.$store.dispatch('getFoodCategorys')
       // 异步获取食品商家列表
       this.$store.dispatch('getShops')
+
+      /*setTimeout(() => {
+        // 必须在列表数据页面显示之后才创建
+        new Swiper('.swiper-container', {
+          loop: true, // 循环模式选项
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination',
+          },
+        })
+      }, 1000)*/
     },
     computed: {
-      ...mapState(['address'])
+      ...mapState(['address', 'categorys']),
+
+      categorysArr () {
+        const {categorys} = this
+        // 二维数组
+        const arr = []
+        // 内部的小数组(最大长度为8)
+        let smallArr = []
+        // 遍历categorys
+        categorys.forEach(c => {
+
+          // 将smallArr保存大数组(只能一次)
+          if(smallArr.length===0) {
+            arr.push(smallArr)
+          }
+
+          // 将c保存到smallArr
+          smallArr.push(c)
+
+          // 一旦小数组满了, 准备一个新的空小数组
+          if(smallArr.length===8) {
+            smallArr = []
+          }
+        })
+
+        return arr
+      }
+    },
+
+    /*
+    bug: 分类轮播有问题
+    解决: watch + nextTick()
+     */
+    watch: {
+      // 更新状态数据==>调用监视的回调函数 ==> 异步更新界面 ==> 执行$nextTick()指定的回调函数
+      categorys () { // categorys的状态更新了
+        // 必须在列表数据页面显示之后才创建
+        // 将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它
+        this.$nextTick(() => {
+          new Swiper('.swiper-container', {
+            loop: true, // 循环模式选项
+            // 如果需要分页器
+            pagination: {
+              el: '.swiper-pagination',
+            },
+          })
+        })
+      }
     },
     components: {
       ShopList
