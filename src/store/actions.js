@@ -5,13 +5,15 @@ import {
   reqAddress,
   reqShops,
   reqFoodCategorys,
-  reqUserInfo
+  reqUserInfo,
+  reqLogout
 } from '../api'
 import {
   RECEIVE_SHOPS,
   RECEIVE_CATEGORYS,
   RECEIVE_ADDRESS,
-  RECEIVE_USER
+  RECEIVE_USER,
+  RESET_USER
 } from './mutation-types'
 
 export default {
@@ -62,6 +64,14 @@ export default {
     if(result.code===0) {
       const user = result.data
       commit(RECEIVE_USER, {user})
+    }
+  },
+
+  // 退出登陆的异步action
+  async logout({commit}) {
+    const result = await reqLogout()
+    if(result.code===0) {
+      commit(RESET_USER)
     }
   }
 }

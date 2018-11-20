@@ -25,3 +25,6 @@ export const reqPwdLogin = ({name, pwd, captcha}) => ajax(BASE + '/login_pwd', {
 
 // 获取当前用户信息
 export const reqUserInfo = () => ajax(BASE + '/userinfo')
+
+// 退出登陆
+export const reqLogout = () => ajax(BASE + '/logout')
