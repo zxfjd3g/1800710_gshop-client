@@ -12,6 +12,8 @@ import TopHeader from './components/TopHeader/TopHeader.vue'
 Vue.component('TopHeader', TopHeader)
 Vue.component(Button.name, Button)
 
+import './mock/mockServer'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
