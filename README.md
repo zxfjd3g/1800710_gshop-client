@@ -31,3 +31,53 @@
 ## 6. 后台应用
     运行后台项目(启动mongodb服务), 
     使用postman测试后台接口, 如果不一致, 修改接口文档
+    
+# day02
+
+## 1. 异步显示数据
+    封装ajax: 
+        promise+axios封装ajax请求的函数
+        封装每个接口对应的请求函数(能根据接口定义ajax请求函数)
+        解决ajax的跨越域问题: 配置代理, 对代理的理解
+    vuex编码
+        创建所有相关的模块: store/index|state|mutations|actions|getters|mutation-types
+        设计state: 从后台获取的数据
+        实现actions: 
+            定义异步action: async/await
+            流程:　发ajax获取数据, commit给mutation
+        实现mutations: 给状态赋值
+        实现index: 创建store对象
+        main.js: 配置store
+    组件异步显示数据
+        在mounted()通过$store.dispatch('actionName')来异步获取后台数据到state中
+        mapState(['xxx'])读取state中数据到组件中
+        在模板中显示xxx的数据
+
+## 2. 异步显示分类轮播
+    通过vuex获取categorys数组(发请求, 读取)
+    对数据进行整合计算(一维变为特定的二维数组)
+    使用Swiper显示轮播, 如何在界面更新之后创建Swiper对象?
+        1). 使用watch+$nextTick()
+        2). 使用回调+$nextTick()	
+    使用svg图片实现loading的效果  
+    
+## 3. Star组件
+    创建组件, 设计组件的props
+    使用组件标签, 并传入相应的标签属性
+    完成组件编码
+    
+## 4. 登陆/注册功能: 界面效果
+    1). 切换登陆方式: loginWay
+    2). 手机号验证: right_phone + isRightPhone计算属性
+    3). 倒计时效果: computeTime + setInterval()
+    4). 密码显示/隐藏的切换: isShowPwd + transition
+    
+# day03
+## 1. 登陆/注册交互功能
+    1). 一次性图片验证码
+    2). 一次性短信验证码
+    3). 短信登陆
+    4). 密码登陆
+    5). 前台表单验证
+    6). 自动登陆
+    7). 退出登陆
