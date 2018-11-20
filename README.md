@@ -71,3 +71,13 @@
     2). 手机号验证: right_phone + isRightPhone计算属性
     3). 倒计时效果: computeTime + setInterval()
     4). 密码显示/隐藏的切换: isShowPwd + transition
+    
+# day03
+## 1. 登陆/注册交互功能
+    1). 一次性图片验证码
+    2). 一次性短信验证码
+    3). 短信登陆
+    4). 密码登陆
+    5). 前台表单验证
+    6). 自动登陆
+    7). 退出登陆

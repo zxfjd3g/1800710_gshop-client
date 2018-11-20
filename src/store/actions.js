@@ -4,12 +4,14 @@ Vuex最核心的管理对象
 import {
   reqAddress,
   reqShops,
-  reqFoodCategorys
+  reqFoodCategorys,
+  reqUserInfo
 } from '../api'
 import {
   RECEIVE_SHOPS,
   RECEIVE_CATEGORYS,
-  RECEIVE_ADDRESS
+  RECEIVE_ADDRESS,
+  RECEIVE_USER
 } from './mutation-types'
 
 export default {
@@ -49,4 +51,17 @@ export default {
     }
   },
 
+  // 保存user的同步action
+  saveUser({commit}, user) {
+    commit(RECEIVE_USER, {user})
+  },
+
+  // 获取当前用户信息的异步action
+  async getUserInfo ({commit}) {
+    const result = await reqUserInfo()
+    if(result.code===0) {
+      const user = result.data
+      commit(RECEIVE_USER, {user})
+    }
+  }
 }
