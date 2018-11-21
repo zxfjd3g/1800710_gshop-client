@@ -4,7 +4,7 @@
       <div class="menu-wrapper">
         <ul>
           <!--current-->
-          <li class="menu-item" v-for="(good, index) in goods" :key="index">
+          <li class="menu-item" v-for="(good, index) in goods" :key="index" :class="{current: index===currentIndex}">
             <span class="text bottom-border-1px">
               <img class="icon" v-if="good.icon" :src="good.icon">
               {{good.name}}
@@ -13,7 +13,7 @@
         </ul>
       </div>
       <div class="foods-wrapper">
-        <ul>
+        <ul ref="RightUl">
           <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -48,20 +48,38 @@
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
   export default {
+    data () {
+      return {
+        scrollY: 0, // 右侧列表Y轴方向滑动的位置
+        tops: [], // 右侧所有分类li标签的top值
+      }
+    },
     mounted () {
       this.$store.dispatch('getShopGoods', () => { // goods数据更新
         this.$nextTick(() => {
           this._initScroll()
+          this._initTops()
         })
       })
 
     },
 
     computed: {
-      ...mapState(['goods'])
+      ...mapState(['goods']),
+
+      // 当前分类的下标
+      currentIndex () {
+        const {scrollY, tops} = this
+
+        return tops.findIndex((top, index) => {
+          // scrollY大于或等于当前top && 小于下一个top
+          return scrollY>=top && scrollY<tops[index+1]
+        })
+      }
     },
 
     methods: {
+      // 初始化滚动对象
       _initScroll () {
         // 创建左侧列表滑动对象
         new BScroll('.menu-wrapper', {
@@ -71,6 +89,21 @@
         new BScroll('.foods-wrapper', {
 
         })
+      },
+
+      // 初始化tops
+      _initTops () {
+        const tops = []
+        let top = 0
+        tops.push(top)
+        const lis = this.$refs.RightUl.getElementsByClassName('food-list-hook')
+        Array.prototype.slice.call(lis).forEach(li => {
+          top += li.clientHeight
+          tops.push(top)
+        })
+        // 更新tops状态
+        this.tops = tops
+        console.log('tops', tops)
       }
     }
   }
