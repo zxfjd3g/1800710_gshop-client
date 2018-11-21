@@ -45,14 +45,33 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
   export default {
     mounted () {
-      this.$store.dispatch('getShopGoods')
+      this.$store.dispatch('getShopGoods', () => { // goods数据更新
+        this.$nextTick(() => {
+          this._initScroll()
+        })
+      })
+
     },
 
     computed: {
       ...mapState(['goods'])
+    },
+
+    methods: {
+      _initScroll () {
+        // 创建左侧列表滑动对象
+        new BScroll('.menu-wrapper', {
+
+        })
+        // 创建右侧列表滑动对象
+        new BScroll('.foods-wrapper', {
+
+        })
+      }
     }
   }
 </script>
