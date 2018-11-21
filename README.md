@@ -108,3 +108,8 @@
     3). mockjs的理解和使用
         用来提供mock数据接口的库
         生成随机数据, 拦截ajax请求
+        
+# day04
+## 1. ShopHeader组件
+## 2. ShopGoods组件
+## 3. CartControl组件
