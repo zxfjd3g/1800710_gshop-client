@@ -1,6 +1,7 @@
 /*
 包含n个直接更新状态数据的对象
  */
+import Vue from 'vue'
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
@@ -9,26 +10,28 @@ import {
   RESET_USER,
   RECEIVE_GOODS,
   RECEIVE_RATINGS,
-  RECEIVE_INFO
+  RECEIVE_INFO,
+  ADD_FOOD_COUNT,
+  REDUCE_FOOD_COUNT
 } from './mutation-types'
 
 export default {
-  [RECEIVE_ADDRESS] (state, {address}) {
+  [RECEIVE_ADDRESS](state, {address}) {
     state.address = address
   },
 
-  [RECEIVE_CATEGORYS] (state, {categorys}) {
+  [RECEIVE_CATEGORYS](state, {categorys}) {
     state.categorys = categorys
   },
 
-  [RECEIVE_SHOPS] (state, {shops}) {
+  [RECEIVE_SHOPS](state, {shops}) {
     state.shops = shops
   },
 
-  [RECEIVE_USER] (state, {user}) {
+  [RECEIVE_USER](state, {user}) {
     state.user = user
   },
-  [RESET_USER] (state) {
+  [RESET_USER](state) {
     state.user = {}
   },
 
@@ -42,5 +45,22 @@ export default {
 
   [RECEIVE_GOODS](state, {goods}) {
     state.goods = goods
+  },
+
+  [ADD_FOOD_COUNT](state, {food}) {
+    if (food.count) {
+      food.count++
+    } else {// 第一次
+      // 新添加count属性, 并指定值为1
+      // food.count = 1  // 没有数据绑定==> 不会更新界面
+      Vue.set(food, 'count', 1)
+    }
+  },
+
+  [REDUCE_FOOD_COUNT](state, {food}) {
+    if (food.count) {
+      food.count--
+    }
+
   },
 }
