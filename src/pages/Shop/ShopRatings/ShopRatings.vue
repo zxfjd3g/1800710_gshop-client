@@ -26,7 +26,10 @@
 
       <Split/>
 
-      <div>RatingSelect组件</div>
+      <RatingsFilter :selectType="selectType"
+                     :onlyContent="onlyContent"
+                     @setSelectType="setSelectType"
+                     @toggleOnlyContent="toggleOnlyContent"/>
 
       <div class="rating-wrapper">
         <ul>
@@ -57,6 +60,7 @@
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
   import Star from '../../../components/Star/Star.vue'
+  import RatingsFilter from '../../../components/RatingsFilter/RatingsFilter.vue'
   export default {
 
     data () {
@@ -99,8 +103,19 @@
       }
     },
 
+    methods: {
+      setSelectType (selectType) {
+        this.selectType = selectType
+      },
+
+      toggleOnlyContent () {
+        this.onlyContent = !this.onlyContent
+      }
+    },
+
     components: {
-      Star
+      Star,
+      RatingsFilter
     }
 
   }
