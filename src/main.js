@@ -24,6 +24,9 @@ Vue.component(Button.name, Button)
 import './mock/mockServer'
 import './filters'
 
+// 将store保存到Vue上
+Vue.store = store
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
