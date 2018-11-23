@@ -21,7 +21,8 @@ import {
   RECEIVE_RATINGS,
   RECEIVE_GOODS,
   ADD_FOOD_COUNT,
-  REDUCE_FOOD_COUNT
+  REDUCE_FOOD_COUNT,
+  CLEAR_CART
 } from './mutation-types'
 
 export default {
@@ -120,5 +121,10 @@ export default {
     } else {
       commit(REDUCE_FOOD_COUNT, {food})
     }
+  },
+
+  // 清空购物车数据的同步action
+  clearCart ({commit}) {
+    commit(CLEAR_CART)
   }
 }
