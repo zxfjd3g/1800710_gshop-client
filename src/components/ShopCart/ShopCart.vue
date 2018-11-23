@@ -73,7 +73,7 @@
           return `￥${minPrice}元起送`
         } else if(totalPrice<minPrice){
           return `还差￥${minPrice-totalPrice}元起送`
-        } else {
+        } else if (totalPrice){
           return '去结算'
         }
       },
