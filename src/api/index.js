@@ -3,7 +3,9 @@
 函数的返回值是promise对象
  */
 import ajax from './ajax'
-const BASE = '/api'
+// const BASE = '/api'  // 开发环境
+const BASE = '' // 生产环境
+// const BASE = 'http://localhost:5000'
 
 // [1、根据经纬度获取位置详情](#1根据经纬度获取位置详情)<br/>
 export const reqAddress = (longitude, latitude) => ajax(BASE+`/position/${latitude},${longitude}`)
